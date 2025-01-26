@@ -4403,50 +4403,51 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var dir_x = Input.get_axis(\"ui_left\", \"ui_right\")
-	if dir_x:
-		velocity.x = dir_x * SPEED
-		print(dir_x) 
-	#	play_anim(1)
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-	#	play_anim(0)
-	var dir_y = Input.get_axis(\"ui_up\", \"ui_down\")
-	if dir_y:
-		velocity.y = dir_y * SPEED
-		print(dir_y)
-	#	play_anim(1)
-	else:
-		velocity.y = move_toward(velocity.y, 0, SPEED)
-	#	play_anim(0)
+	
+	
 
 	move_and_slide()
 	
 func play_anim(movement):
 	var anim = $AnimatedSprite2D
-	var dir_x = Input.get_axis(\"ui_left\", \"ui_right\")
-	var dir_y = Input.get_axis(\"ui_up\", \"ui_down\")
 	
-	if dir_x == -1:
-		anim.flip_h = false
-		anim.play(\"walk\")
+	var dir_x = Input.get_axis(\"ui_left\", \"ui_right\")
+	if dir_x:
+			velocity.x = dir_x * SPEED
+
 	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		
+		
+	var dir_y = Input.get_axis(\"ui_up\", \"ui_down\")
+	if dir_y:
+		velocity.y = dir_y * SPEED
+
+	else:
+		velocity.y = move_toward(velocity.y, 0, SPEED)
+
+	if dir_x == \"ui_right\":
+		anim.flip_h = false
+	if movement == 1:
+		anim.play(\"walk\")
+	elif movement == 0:
 		anim.play(\"idle\")
 
-	if dir_x < 0:
+	if dir_x == \"ui_left\":
 		anim.flip_h = true
 	if movement == 1:
 		anim.play(\"walk\")
 	elif movement == 0:
 		anim.play(\"idle\")
 
-	if dir_y == -1:
+	if dir_y == \"ui_up\":
 		anim.flip_h = true
+	if movement == 1:
 		anim.play(\"walk\")
 	elif movement == 0:
 		anim.play(\"idle\")
 
-	if dir_y < 1:
+	if dir_y == \"ui_down\":
 		anim.flip_h = false
 	if movement == 1:
 		anim.play(\"walk\")
@@ -4695,17 +4696,11 @@ motion_mode = 1
 script = SubResource("GDScript_a1kmv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
-position = Vector2(-96, 10)
 sprite_frames = SubResource("SpriteFrames_8peab")
-animation = &"idle"
-frame_progress = 0.59994
+animation = &"walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_r8ymf")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-
-[node name="Timer" type="Timer" parent="Player"]
-wait_time = 0.495
-autostart = true
