@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgp12atukw1i0"]
+
+[sub_resource type="GDScript" id="GDScript_epwat"]
+script/source = "extends RigidBody2D
+
+@export var speed: float = 600.0
+
+func _ready():
+	# pew pew pew
+	linear_velocity = Vector2(speed, 0).rotated(rotation)
+
+func _on_body_entered(body):
+	# Kollisionen mit gegnern
+	if body.is_in_group(\"enemies\"): 
+		body.take_damage()  #
+		queue_free()
+	elif body.is_in_group(\"walls\"):
+		queue_free()
+"
+
+[node name="Projectile" type="Node2D"]
+script = SubResource("GDScript_epwat")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
